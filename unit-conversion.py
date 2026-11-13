@@ -2,7 +2,7 @@
 # Class: CS 361: Software Engineering 1
 # Fle: Unit Conversion Microservice
 # Date Created: 7 Nov 2026
-# Date Last Modified: 12 Nov 2026
+# Date Last Modified: 13 Nov 2026
 
 import zmq
 import json
@@ -82,11 +82,88 @@ def convert_temperature(source_unit: str, source_value: float) -> tuple:
 
 # Convert between miles, meters, and kilometers.
 def convert_distance(source_unit: str, source_value: float) -> tuple:
-    return
+    match source_unit.lower():
+        case "inch":
+            new_unit = "centimeter"
+        case "in":
+            new_unit = "cm"
+        case "centimeter":
+            new_unit = "inch"
+        case "cm":
+            new_unit = "in"
+        case "foot" | "yard":
+            new_unit = "meter"
+        case "ft" | "yd":
+            new_unit = "m"
+        case "meter":
+            new_unit = "foot"
+        case "m":
+            new_unit = "ft"
+        case "mile":
+            new_unit = "kilometer"
+        case "mi":
+            new_unit = "km"
+        case "kilometer":
+            new_unit = "mile"
+        case "km":
+            new_unit = "mi"
+        case _:
+            new_unit = None
+
+    if new_unit in ("centimeter", "cm"):
+        new_value = source_value * 2.54
+    elif new_unit in ("inch", "in"):
+        new_value = source_value / 2.54
+    elif new_unit in ("meter", "m"):
+        if source_unit.lower() in ("foot", "ft"):
+            new_value = source_value / 3.281
+        else:  # Assume yard or yd
+            new_value = source_value / 1.094
+    elif new_unit in ("foot", "ft"):
+        new_value = source_value * 3.281
+    elif new_unit in ("kilometer", "km"):
+        new_value = source_value * 1.609
+    elif new_unit in ("mile", "mi"):
+        new_value = source_value / 1.609
+    else:
+        new_value = None
+
+    return new_unit, new_value
 
 # Convert between ounces, pounds, grams, and kilograms.
 def convert_weight(source_unit: str, source_value: float) -> tuple:
-    return
+    match source_unit.lower():
+        case "ounce":
+            new_unit = "gram"
+        case "oz":
+            new_unit = "g"
+        case "gram":
+            new_unit = "ounce"
+        case "g":
+            new_unit = "oz"
+        case "pound":
+            new_unit = "kilogram"
+        case "lb":
+            new_unit = "kg"
+        case "kilogram":
+            new_unit = "pound"
+        case "kg":
+            new_unit = "lb"
+        case _:
+            new_unit = None
+
+    if new_unit in ("gram", "g"):
+        new_value = source_value * 28.35
+    elif new_unit in ("ounce", "oz"):
+        new_value = source_value / 28.35
+    elif new_unit in ("kilogram", "kg"):
+        new_value = source_value / 2.205
+    elif new_unit in ("pound", "lb"):
+        new_value = source_value * 2.205
+    else:
+        new_value = None
+
+    return new_unit, new_value
 
 # Convert between miles per hour and kilometers per hours, and vice versa.
 def convert_speed(source_unit: str, source_value: float) -> tuple:
@@ -103,9 +180,9 @@ def convert_speed(source_unit: str, source_value: float) -> tuple:
             new_unit = None
 
     if new_unit in ("kilometers per hour", "kph"):
-        new_value = source_value / 1.609
-    elif new_unit in ("miles per hour", "mph"):
         new_value = source_value * 1.609
+    elif new_unit in ("miles per hour", "mph"):
+        new_value = source_value / 1.609
     else:
         new_value = None
 
