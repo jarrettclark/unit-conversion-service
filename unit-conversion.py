@@ -22,7 +22,7 @@ def start_unit_conversion_service():
             "value": new_value
         }
         json_send = json.dumps(new_json)
-        socket.send_string(new_json)
+        socket.send_string(json_send)
 
 # Geturns the type of a unit when given a unit name. The unit name may be the full name or abbreviation.
 def get_unit_type(unit: str) -> str:
@@ -90,7 +90,26 @@ def convert_weight(source_unit: str, source_value: float) -> tuple:
 
 # Convert between miles per hour and kilometers per hours, and vice versa.
 def convert_speed(source_unit: str, source_value: float) -> tuple:
-    return
+    match source_unit.lower():
+        case "miles per hour":
+            new_unit = "kilometers per hour"
+        case "mph":
+            new_unit = "kph"
+        case "kilometers per hour":
+            new_unit = "miles per hour"
+        case "kph":
+            new_unit = "mph"
+        case _:
+            new_unit = None
+
+    if new_unit in ("kilometers per hour", "kph"):
+        new_value = source_value / 1.609
+    elif new_unit in ("miles per hour", "mph"):
+        new_value = source_value * 1.609
+    else:
+        new_value = None
+
+    return new_unit, new_value
 
 if __name__ == "__main__":
     start_unit_conversion_service()
