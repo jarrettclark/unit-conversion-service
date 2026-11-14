@@ -9,7 +9,7 @@ The microservice will then return a message via ZeroMQ with a JSON string contai
 
 {
   "unit": "kg",
-  "value": 68.0389
+  "value": 68.02721088435374
 }
 
 The following units are supported:
@@ -29,3 +29,29 @@ The following units are supported:
 * Kilogram or Kg
 * Miles per hour or Mph
 * Kilometers per hour or Kph
+
+## How to request data
+Start the microservice with `python3 unit-conversion.py` (you need `pip install pyzmq` first). It listens on port 5000. Connect a ZeroMQ REQ socket to `tcp://localhost:5000` and send the JSON as a string.
+
+Example call:
+```python
+import json
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.REQ)
+socket.connect("tcp://localhost:5000")
+
+request = {"unit": "lb", "value": 150}
+socket.send_string(json.dumps(request))
+```
+
+## How to receive data
+Call `recv()` on the same socket. The reply is a JSON string with the new unit and the converted value.
+
+Example call:
+```python
+reply = json.loads(socket.recv().decode())
+print(reply["unit"])   # kg
+print(reply["value"])  # 68.02721088435374
+```
