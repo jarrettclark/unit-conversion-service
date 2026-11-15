@@ -60,4 +60,4 @@ print(reply["value"])  # 68.02721088435374
 
 ## UML sequence diagram
 
-<img width="800" alt="Assignment 7 - UML Sequence Diagram" src="https://github.com/jarrettclark/unit-conversion-service/blob/main/uml_diagram.png" />
+<img width="800" alt="Assignment 7 - UML Sequence Diagram" src="https://github.com/jarrettclark/unit-conversion-service/blob/main/uml_diagram.jpg" />
