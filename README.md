@@ -1,3 +1,5 @@
+## Overview
+
 This Python microservice converts length, distance, weight, and temperatures between different units. It expects a JSON string to be sent via ZeroMQ. The JSON string should contain two keys: unit and value. The unit should be a string and value should be a number. For example:
 
 {
@@ -55,3 +57,7 @@ reply = json.loads(socket.recv().decode())
 print(reply["unit"])   # kg
 print(reply["value"])  # 68.02721088435374
 ```
+
+## UML sequence diagram
+
+<img width="800" alt="Assignment 7 - UML Sequence Diagram" src="https://github.com/jarrettclark/unit-conversion-service/blob/main/uml_diagram.png" />
